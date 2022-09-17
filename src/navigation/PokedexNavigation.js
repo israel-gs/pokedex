@@ -12,7 +12,8 @@ const PokedexNavigation = () => {
         name="Pokedex"
         component={Pokedex}
         options={{
-          title: "Pokedex",
+          title: "",
+          headerTransparent: true,
         }}
       />
       <Stack.Screen

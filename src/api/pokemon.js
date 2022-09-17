@@ -1,9 +1,11 @@
 import { HOST } from "../utils/constants";
 
-export const getPokemons = async (limit, offset) => {
+export const getPokemons = async (limit, page) => {
   limit = limit || 20;
-  offset = offset || 0;
+  page = page || 0;
+  const offset = page * limit;
   try {
+    console.log("getPokemons", limit, offset);
     const response = await fetch(
       `${HOST}/pokemon?limit=${limit}&offset=${offset}`
     );
