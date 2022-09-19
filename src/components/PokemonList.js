@@ -1,6 +1,13 @@
 import React from "react";
 
-import { ActivityIndicator, FlatList, StyleSheet } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import PokemonCard from "./PokemonCard";
 
 const PokemonList = (props) => {
@@ -23,6 +30,11 @@ const PokemonList = (props) => {
       contentContainerStyle={styles.container}
       onEndReached={loadMore}
       onEndReachedThreshold={0.1}
+      ListHeaderComponent={
+        <View style={styles.header}>
+          <Text style={styles.title}>Pokedex</Text>
+        </View>
+      }
       ListFooterComponent={
         <ActivityIndicator size="large" style={styles.loading} />
       }
@@ -31,12 +43,24 @@ const PokemonList = (props) => {
 };
 
 const styles = StyleSheet.create({
+  header: {
+    alignItems: "flex-start",
+    justifyContent: "center",
+    paddingVertical: 25,
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#000",
+    marginLeft: 10,
+  },
   container: {
     paddingHorizontal: 10,
+    marginTop: Platform.OS === "android" ? 30 : 0,
   },
   loading: {
     marginTop: 20,
-    marginBottom: 60,
+    marginBottom: Platform.OS === "android" ? 90 : 60,
   },
 });
 

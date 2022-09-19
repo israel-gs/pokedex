@@ -9,27 +9,39 @@ import {
 } from "react-native";
 import { getColorFromPokemonType } from "../utils/colors";
 import { capitalize } from "lodash";
+import { useNavigation } from "@react-navigation/native";
 
 const PokemonCard = (props) => {
   const { pokemon } = props;
 
+  const navigation = useNavigation();
+
   const bgStyle = {
-    backgroundColor: getColorFromPokemonType(pokemon.type),
+    backgroundColor: getColorFromPokemonType(pokemon.types[0]),
   };
 
   const goToPokemon = () => {
-    console.log("Go to pokemon ", pokemon.name);
+    navigation.navigate("Pokemon", { name: pokemon.name });
   };
 
   return (
     <TouchableWithoutFeedback onPress={goToPokemon}>
-      <View style={styles.card}>
+      <View style={{ ...styles.card, ...bgStyle }}>
+        <Text style={styles.number}>
+          #{`${pokemon.order}`.padStart(3, "0")}
+        </Text>
         <View style={styles.container}>
-          <View style={{ ...styles.bg, ...bgStyle }}>
-            <Text style={styles.number}>
-              #{`${pokemon.order}`.padStart(3, "0")}
-            </Text>
+          <View style={styles.dataContainer}>
             <Text style={styles.name}>{capitalize(pokemon.name)}</Text>
+            <View style={styles.types}>
+              {pokemon.types.map((type) => (
+                <View key={type} style={styles.typeContainer}>
+                  <Text style={styles.typeText}>{capitalize(type)}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+          <View style={styles.imageContainer}>
             <Image style={styles.image} source={{ uri: pokemon.image }} />
           </View>
         </View>
@@ -42,13 +54,7 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     height: 150,
-  },
-  container: {
-    flex: 1,
-    padding: 5,
-  },
-  bg: {
-    flex: 1,
+    margin: 5,
     borderRadius: 15,
     padding: 10,
   },
@@ -59,19 +65,42 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 11,
   },
+  container: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  dataContainer: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  typeContainer: {
+    backgroundColor: "rgba(255,255,255,0.2)",
+    borderRadius: 40,
+    padding: 5,
+    margin: 2,
+  },
   name: {
     color: "white",
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "bold",
-    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  typeText: {
+    textAlign: "center",
+    color: "white",
+    fontSize: 12,
+    fontWeight: "bold",
+  },
+  imageContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
   },
   image: {
     resizeMode: "contain",
-    position: "absolute",
-    bottom: 2,
-    right: 2,
-    width: 90,
-    height: 90,
+    width: 70,
+    height: 70,
   },
 });
 

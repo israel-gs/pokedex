@@ -20,10 +20,11 @@ const Pokedex = () => {
       const dataArray = [];
       for await (const pokemon of data.results) {
         const pokemonData = await getPokemon(pokemon.name);
+        console.log(pokemonData.types);
         dataArray.push({
           id: pokemonData.id,
           name: pokemonData.name,
-          type: pokemonData.types[0].type.name,
+          types: pokemonData.types.map((type) => type.type.name),
           order: pokemonData.order,
           image: pokemonData.sprites.other["official-artwork"].front_default,
         });
